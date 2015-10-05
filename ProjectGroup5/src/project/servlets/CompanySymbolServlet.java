@@ -1,7 +1,6 @@
 package project.servlets;
 
 import java.io.IOException;
-
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,6 +18,7 @@ import org.jboss.logging.Logger;
 
 import objects.dataobjects.CompanyObject;
 import objects.dataobjects.StockObject;
+import project.businesslogic.TwoMovingAvg;
 import data.access.TradesBeanLocal;
 
 /**
@@ -64,6 +64,10 @@ public class CompanySymbolServlet extends HttpServlet {
 		if (company!=null) {
 			stock = continuousFeed(company);
 		}
+		
+		TwoMovingAvg newAvg = new TwoMovingAvg();
+		newAvg.setSymbol(company);
+		newAvg.run();
 		
 		//return to main Index.jsp
 		request.setAttribute("Stock", stock);

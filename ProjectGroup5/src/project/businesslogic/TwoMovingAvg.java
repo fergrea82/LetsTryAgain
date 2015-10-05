@@ -137,7 +137,7 @@ public class TwoMovingAvg implements Runnable {
 			}
 		}
 	
-	public static double calcLongMovingAverage(LinkedList<Double> lList){
+	public double calcLongMovingAverage(LinkedList<Double> lList){
 		double av = 0, total = 0;
 		for(int i = 0;i<lList.size();i++)
 		{
@@ -147,7 +147,7 @@ public class TwoMovingAvg implements Runnable {
         return av;
 	}
 	
-	public static double calcShortMovingAverage(LinkedList<Double> sList){
+	public double calcShortMovingAverage(LinkedList<Double> sList){
 		double av = 0, total = 0;
 		for(int i = 0;i<sList.size();i++)
 		{
