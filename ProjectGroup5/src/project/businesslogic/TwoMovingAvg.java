@@ -2,6 +2,7 @@ package project.businesslogic;
 import java.util.Calendar;
 import java.util.LinkedList;
 
+import javax.ejb.EJB;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
@@ -13,6 +14,7 @@ import objects.dataobjects.StockObject;
 import objects.dataobjects.TradeHistoryObject;
 import yahooFeed.Feed;
 
+@EJB(name="ejb/TradesBean",beanInterface=TradesBeanLocal.class)
 public class TwoMovingAvg implements Runnable {
 	static Logger log = Logger.getLogger(TwoMovingAvg.class);
 	
@@ -100,7 +102,8 @@ public class TwoMovingAvg implements Runnable {
 						trade.setBought(false);
 						trade.setStockObject(stock);
 						trade.setTradeTime(Calendar.getInstance().getTime().toString());
-						
+						bean.addTrade(trade);
+						log.info("Trade added: "+trade.getTradeTime());
 					}
 					
 				}
@@ -110,9 +113,11 @@ public class TwoMovingAvg implements Runnable {
 						System.out.println("BUYYYYYINGGGGGG");
 						bought = true;
 						pricePaid = stock.getAskPrice() * QUANTITY;
-						trade.setBought(false);
+						trade.setBought(true);
 						trade.setStockObject(stock);
 						trade.setTradeTime(Calendar.getInstance().getTime().toString());
+						bean.addTrade(trade);
+						log.info("Trade added: "+trade.getTradeTime());
 					}				
 				}
 				differenceLongShort.remove(0);
