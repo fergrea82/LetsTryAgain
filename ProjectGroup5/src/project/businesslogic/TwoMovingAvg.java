@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import org.jboss.logging.Logger;
+
 import data.access.TradesBeanLocal;
 import objects.dataobjects.CompanyObject;
 import objects.dataobjects.StockObject;
@@ -12,7 +14,8 @@ import objects.dataobjects.TradeHistoryObject;
 import yahooFeed.Feed;
 
 public class TwoMovingAvg implements Runnable {
-
+	static Logger log = Logger.getLogger(TwoMovingAvg.class);
+	
 	private static final int QUANTITY = 15000;
 	private static final int VALUESHORTAVERAGE = 4;
 	private static final int VALUELONGAVERAGE = 20;
@@ -44,7 +47,7 @@ public class TwoMovingAvg implements Runnable {
 			bean = (TradesBeanLocal)context.lookup("java:comp/env/ejb/TradesBean");
 		
 		}catch(NamingException e) {
-			//log.error("NamingException: " + e.getMessage());
+			log.error("NamingException: " + e.getMessage());
 			e.printStackTrace();
 		}
 	while(true){
@@ -52,7 +55,7 @@ public class TwoMovingAvg implements Runnable {
 			Thread.sleep(1000);
 			
 			stock = Feed.feedConnection(compSymbol);
-
+			log.info("Stock Object Created Using Feed Data");
 			CompanyObject company = new CompanyObject();
 			
 			if(bean.getCompany(compSymbol)!=null) {
@@ -122,6 +125,7 @@ public class TwoMovingAvg implements Runnable {
 				System.out.println("Running Total = " + runningTotal);
 				
 				if(runningTotal <= lossMarginOfInvestment || runningTotal >= profitMarginOfInvestment)
+					log.info("1% Profit Or Loss Margin Met.. Two Moving Average Strategy Exited");
 					break;
 			}
 			
@@ -159,6 +163,7 @@ public class TwoMovingAvg implements Runnable {
 		try {
 			TwoMovingAverage(symbol);
 		} catch (InterruptedException e) {
+			log.error("InterruptedException: " + e.getMessage());
 			e.printStackTrace();
 		}
 		
