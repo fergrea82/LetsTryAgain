@@ -25,6 +25,10 @@ public class UserObject {
 		this.userName=userName;
 	}
 	
+	public UserObject() {
+		//default constructor
+	}
+	
 	public int getUserID() {
 		return userID;
 	}
@@ -37,8 +41,5 @@ public class UserObject {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
-	
-	
-	
+
 }

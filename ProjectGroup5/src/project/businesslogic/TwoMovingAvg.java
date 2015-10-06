@@ -12,6 +12,7 @@ import data.access.TradesBeanLocal;
 import objects.dataobjects.CompanyObject;
 import objects.dataobjects.StockObject;
 import objects.dataobjects.TradeHistoryObject;
+import objects.dataobjects.UserObject;
 import yahooFeed.Feed;
 
 @EJB(name="ejb/TradesBean",beanInterface=TradesBeanLocal.class)
@@ -43,10 +44,12 @@ public class TwoMovingAvg implements Runnable {
 		
 		TradesBeanLocal bean = null;
 		TradeHistoryObject trade = null;
+		UserObject user = null;
 		try {
 			InitialContext context = new InitialContext();
 			
 			bean = (TradesBeanLocal)context.lookup("java:comp/env/ejb/TradesBean");
+			user = bean.getUser();
 		
 		}catch(NamingException e) {
 			log.error("NamingException: " + e.getMessage());
@@ -65,6 +68,7 @@ public class TwoMovingAvg implements Runnable {
 	        }
 	        else {
 	        	company.setCompanySymbol(compSymbol);
+	        	company.setStrategy(1);
 	        	bean.addCompany(company);
 	        	company = bean.getCompany(compSymbol);
 	        }
@@ -99,9 +103,13 @@ public class TwoMovingAvg implements Runnable {
 						System.out.println("SELLLINGGGGGG");
 						sold = true;
 						priceGot = stock.getBidPrice() * QUANTITY;
+						stock.setCompanyObject(company);
+						trade = new TradeHistoryObject();
 						trade.setBought(false);
 						trade.setStockObject(stock);
 						trade.setTradeTime(Calendar.getInstance().getTime().toString());
+						trade.setUserObject(user);
+						bean.addStock(stock);
 						bean.addTrade(trade);
 						log.info("Trade added: "+trade.getTradeTime());
 					}
@@ -113,9 +121,13 @@ public class TwoMovingAvg implements Runnable {
 						System.out.println("BUYYYYYINGGGGGG");
 						bought = true;
 						pricePaid = stock.getAskPrice() * QUANTITY;
+						stock.setCompanyObject(company);
+						trade = new TradeHistoryObject();
 						trade.setBought(true);
 						trade.setStockObject(stock);
 						trade.setTradeTime(Calendar.getInstance().getTime().toString());
+						trade.setUserObject(user);
+						bean.addStock(stock);
 						bean.addTrade(trade);
 						log.info("Trade added: "+trade.getTradeTime());
 					}				

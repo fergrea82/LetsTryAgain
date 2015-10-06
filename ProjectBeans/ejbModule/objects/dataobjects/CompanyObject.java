@@ -20,6 +20,7 @@ public class CompanyObject {
 	private int companyID;
 	
 	private String companySymbol;
+	private int strategy;
 	
 	@OneToMany(mappedBy="companyObj", fetch=FetchType.EAGER,cascade=CascadeType.ALL)
 	private List<StockObject> stocks;
@@ -55,4 +56,13 @@ public class CompanyObject {
 	public void setCompanySymbol(String companySymbol) {
 		this.companySymbol = companySymbol;
 	}
+
+	public int getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(int strategy) {
+		this.strategy = strategy;
+	}
+	
 }
