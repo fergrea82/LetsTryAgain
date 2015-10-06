@@ -73,7 +73,7 @@ public class Feed {
         stockObj.setAskPrice(Double.parseDouble(fields[1]));
         stockObj.setBidPrice(Double.parseDouble(fields[2]));
         //Timestamp ts = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        //SimpleDateFormat sdfDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Timestamp now = new Timestamp(Calendar.getInstance().getTimeInMillis());
         String strDate = now.toString();
         stockObj.setStockTime(strDate);

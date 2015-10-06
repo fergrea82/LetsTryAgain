@@ -1,4 +1,5 @@
 package project.businesslogic;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.LinkedList;
 
@@ -96,6 +97,9 @@ public class TwoMovingAvg implements Runnable {
 			
 			differenceLongShort.add((longMovingAverage - shortMovingAverage));
 			
+			Timestamp now = new Timestamp(Calendar.getInstance().getTimeInMillis());
+	        String strDate = now.toString();
+			
 			if(differenceLongShort.size() == 2){
 				// difference was pos now neg.. e.g was above now below SELL
 				if(differenceLongShort.get(0) > 0 && differenceLongShort.get(1) < 0){
@@ -109,7 +113,7 @@ public class TwoMovingAvg implements Runnable {
 						trade = new TradeHistoryObject();
 						trade.setBought(false);
 						trade.setStockObject(stock);
-						trade.setTradeTime(stock.getStockTime());
+						trade.setTradeTime(strDate);
 						trade.setUserObject(user);
 						
 						bean.addTrade(trade);
@@ -129,7 +133,7 @@ public class TwoMovingAvg implements Runnable {
 						trade = new TradeHistoryObject();
 						trade.setBought(true);
 						trade.setStockObject(stock);
-						trade.setTradeTime(stock.getStockTime());
+						trade.setTradeTime(strDate);
 						trade.setUserObject(user);
 						
 						bean.addTrade(trade);

@@ -1,4 +1,4 @@
-updated 02nd october 2015 14.40
+updated 05th october 2015 14.40
 
 USE citiprojectteam5db;
 
@@ -18,10 +18,11 @@ SELECT * FROM MarketCompany;
 
 CREATE TABLE Company
 (	CompanyID int auto_increment PRIMARY KEY,
-	CompanySymbol nvarchar(30)
+	CompanySymbol nvarchar(30),
+    Strategy int(2)
 );
 
-DELETE FROM Company WHERE CompanyId=6;
+DELETE FROM Company;
 
 ALTER TABLE Company ADD UNIQUE (CompanySymbol);
 

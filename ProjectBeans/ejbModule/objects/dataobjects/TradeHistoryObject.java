@@ -16,16 +16,19 @@ public class TradeHistoryObject {
 	
 	@Id
 	public int tradeID;
+	
 	@ManyToOne(optional = false)
 	@JoinColumn(name="UserID", referencedColumnName="UserID")
 	UserObject userObj;
+	
 	@OneToOne
 	@JoinColumn(name="StockID", referencedColumnName="StockID")
 	StockObject stockObj;
 	public String tradeTime;
 	public boolean buy;
-	public TradeHistoryObject() {
 	
+	public TradeHistoryObject() {
+		//default constructor
 	}
 
 	public TradeHistoryObject(int tradeID, int userID, StockObject stockObj, String tradeTime, boolean isBought){
