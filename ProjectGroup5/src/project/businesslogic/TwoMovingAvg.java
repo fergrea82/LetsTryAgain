@@ -104,12 +104,14 @@ public class TwoMovingAvg implements Runnable {
 						sold = true;
 						priceGot = stock.getBidPrice() * QUANTITY;
 						stock.setCompanyObject(company);
+						bean.addStock(stock);
+						
 						trade = new TradeHistoryObject();
 						trade.setBought(false);
 						trade.setStockObject(stock);
 						trade.setTradeTime(stock.getStockTime());
 						trade.setUserObject(user);
-						bean.addStock(stock);
+						
 						bean.addTrade(trade);
 						log.info("Trade added: "+trade.getTradeTime());
 					}
@@ -122,12 +124,14 @@ public class TwoMovingAvg implements Runnable {
 						bought = true;
 						pricePaid = stock.getAskPrice() * QUANTITY;
 						stock.setCompanyObject(company);
+						bean.addStock(stock);
+						
 						trade = new TradeHistoryObject();
 						trade.setBought(true);
 						trade.setStockObject(stock);
 						trade.setTradeTime(stock.getStockTime());
 						trade.setUserObject(user);
-						bean.addStock(stock);
+						
 						bean.addTrade(trade);
 						log.info("Trade added: "+trade.getTradeTime());
 					}				
