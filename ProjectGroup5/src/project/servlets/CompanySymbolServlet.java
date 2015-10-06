@@ -100,10 +100,10 @@ public class CompanySymbolServlet extends HttpServlet {
 	        
 	        if(bean.getCompany(companySymbol)!=null) {
 	        	company = bean.getCompany(companySymbol);
-	        	
 	        }
 	        else {
 	        	company.setCompanySymbol(companySymbol);
+	        	company.setStrategy(0);
 	        	bean.addCompany(company);
 	        	company = bean.getCompany(companySymbol);
 	        }

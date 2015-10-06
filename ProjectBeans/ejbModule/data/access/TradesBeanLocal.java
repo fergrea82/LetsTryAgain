@@ -7,6 +7,7 @@ import javax.ejb.Local;
 import objects.dataobjects.CompanyObject;
 import objects.dataobjects.StockObject;
 import objects.dataobjects.TradeHistoryObject;
+import objects.dataobjects.UserObject;
 
 @Local
 public interface TradesBeanLocal {
@@ -22,6 +23,8 @@ public interface TradesBeanLocal {
 	public void addTrade(TradeHistoryObject trade);
 
 	public List<TradeHistoryObject> getAllTrades();
+
+	UserObject getUser();
 
 	
 

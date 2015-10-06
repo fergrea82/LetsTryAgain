@@ -1,4 +1,5 @@
 package project.businesslogic;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.LinkedList;
 
@@ -12,6 +13,7 @@ import data.access.TradesBeanLocal;
 import objects.dataobjects.CompanyObject;
 import objects.dataobjects.StockObject;
 import objects.dataobjects.TradeHistoryObject;
+import objects.dataobjects.UserObject;
 import yahooFeed.Feed;
 
 @EJB(name="ejb/TradesBean",beanInterface=TradesBeanLocal.class)
@@ -43,10 +45,12 @@ public class TwoMovingAvg implements Runnable {
 		
 		TradesBeanLocal bean = null;
 		TradeHistoryObject trade = null;
+		UserObject user = null;
 		try {
 			InitialContext context = new InitialContext();
 			
 			bean = (TradesBeanLocal)context.lookup("java:comp/env/ejb/TradesBean");
+			user = bean.getUser();
 		
 		}catch(NamingException e) {
 			log.error("NamingException: " + e.getMessage());
@@ -65,6 +69,7 @@ public class TwoMovingAvg implements Runnable {
 	        }
 	        else {
 	        	company.setCompanySymbol(compSymbol);
+	        	company.setStrategy(1);
 	        	bean.addCompany(company);
 	        	company = bean.getCompany(compSymbol);
 	        }
@@ -92,6 +97,9 @@ public class TwoMovingAvg implements Runnable {
 			
 			differenceLongShort.add((longMovingAverage - shortMovingAverage));
 			
+			Timestamp now = new Timestamp(Calendar.getInstance().getTimeInMillis());
+	        String strDate = now.toString();
+			
 			if(differenceLongShort.size() == 2){
 				// difference was pos now neg.. e.g was above now below SELL
 				if(differenceLongShort.get(0) > 0 && differenceLongShort.get(1) < 0){
@@ -99,9 +107,15 @@ public class TwoMovingAvg implements Runnable {
 						System.out.println("SELLLINGGGGGG");
 						sold = true;
 						priceGot = stock.getBidPrice() * QUANTITY;
+						stock.setCompanyObject(company);
+						bean.addStock(stock);
+						
+						trade = new TradeHistoryObject();
 						trade.setBought(false);
 						trade.setStockObject(stock);
-						trade.setTradeTime(Calendar.getInstance().getTime().toString());
+						trade.setTradeTime(strDate);
+						trade.setUserObject(user);
+						
 						bean.addTrade(trade);
 						log.info("Trade added: "+trade.getTradeTime());
 					}
@@ -113,9 +127,15 @@ public class TwoMovingAvg implements Runnable {
 						System.out.println("BUYYYYYINGGGGGG");
 						bought = true;
 						pricePaid = stock.getAskPrice() * QUANTITY;
+						stock.setCompanyObject(company);
+						bean.addStock(stock);
+						
+						trade = new TradeHistoryObject();
 						trade.setBought(true);
 						trade.setStockObject(stock);
-						trade.setTradeTime(Calendar.getInstance().getTime().toString());
+						trade.setTradeTime(strDate);
+						trade.setUserObject(user);
+						
 						bean.addTrade(trade);
 						log.info("Trade added: "+trade.getTradeTime());
 					}				
@@ -137,7 +157,7 @@ public class TwoMovingAvg implements Runnable {
 			}
 		}
 	
-	public double calcLongMovingAverage(LinkedList<Double> lList){
+	public static double calcLongMovingAverage(LinkedList<Double> lList){
 		double av = 0, total = 0;
 		for(int i = 0;i<lList.size();i++)
 		{
@@ -147,7 +167,7 @@ public class TwoMovingAvg implements Runnable {
         return av;
 	}
 	
-	public double calcShortMovingAverage(LinkedList<Double> sList){
+	public static double calcShortMovingAverage(LinkedList<Double> sList){
 		double av = 0, total = 0;
 		for(int i = 0;i<sList.size();i++)
 		{

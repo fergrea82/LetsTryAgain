@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity(name="stocks")
 public class StockObject {
@@ -29,8 +30,8 @@ public class StockObject {
 	
 	private String StockTime;
 	
-	@OneToMany(mappedBy="stockObj", fetch=FetchType.EAGER)
-	private List<TradeHistoryObject> trades;
+	@OneToOne(mappedBy="stockObj", fetch=FetchType.EAGER)
+	private TradeHistoryObject trade;
 	
 	public StockObject() {
 		//default constructor

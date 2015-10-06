@@ -9,27 +9,34 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity(name="tradehistory")
 public class TradeHistoryObject {
 	
 	@Id
 	public int tradeID;
+	
 	@ManyToOne(optional = false)
 	@JoinColumn(name="UserID", referencedColumnName="UserID")
 	UserObject userObj;
-	@ManyToOne(optional = false)
+	
+	@OneToOne
 	@JoinColumn(name="StockID", referencedColumnName="StockID")
 	StockObject stockObj;
 	public String tradeTime;
-	public boolean isBought;
+	public boolean buy;
+	
+	public TradeHistoryObject() {
+		//default constructor
+	}
 
 	public TradeHistoryObject(int tradeID, int userID, StockObject stockObj, String tradeTime, boolean isBought){
 		this.tradeID=tradeID;
 		this.userObj=userObj;
 		this.stockObj=stockObj;
 		this.tradeTime=tradeTime;
-		this.isBought=isBought;
+		this.buy=isBought;
 	}
 	
 	public int getTradeID() {
@@ -57,12 +64,16 @@ public class TradeHistoryObject {
 		this.tradeTime = tradeTime;
 	}
 	public boolean isBought() {
-		return isBought;
+		return buy;
 	}
 
 	public void setBought(boolean isBought) {
-		this.isBought = isBought;
+		this.buy = isBought;
+	}
+
+	public void setStockObj(StockObject stockObj) {
+		this.stockObj = stockObj;
 	}
 	
-
+	
 }

@@ -2,16 +2,20 @@ package data.access;
 
 import java.util.List;
 
+import javax.ejb.EJBException;
 import javax.ejb.Local;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+
 import objects.dataobjects.CompanyObject;
 import objects.dataobjects.StockObject;
 import objects.dataobjects.TradeHistoryObject;
+import objects.dataobjects.UserObject;
 
 //import object.dataobjects.*;
 
@@ -44,8 +48,10 @@ public class TradesBean implements TradesBeanLocal, TradesBeanRemote {
 			    "SELECT c FROM "+CompanyObject.class.getName()+" c WHERE c.companySymbol = :compName");
 			query.setParameter("compName", symbol);
 		try {
+			
 			comp = (CompanyObject) query.getSingleResult();
-		} catch(NoResultException ex) {
+		} catch(EJBException | PersistenceException e) {
+			//ex.printStackTrace();
 			comp =null;
 		}
 
@@ -71,5 +77,10 @@ public class TradesBean implements TradesBeanLocal, TradesBeanRemote {
 		return trades;
 	}
 	
+	@Override
+	public UserObject getUser() {
+		UserObject user = entityManager.find(UserObject.class,1);
+		return user;
+	}
 	
 }

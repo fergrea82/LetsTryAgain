@@ -2,6 +2,7 @@ package objects.dataobjects;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,12 +18,16 @@ public class UserObject {
 	public int userID;
 	public String userName;
 	
-	@OneToMany(mappedBy="userObj", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="userObj", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
 	private List<TradeHistoryObject> tradesPerUser;
 	
 	public UserObject(int userID, String userName){
 		this.userID=userID;
 		this.userName=userName;
+	}
+	
+	public UserObject() {
+		//default constructor
 	}
 	
 	public int getUserID() {
@@ -37,8 +42,5 @@ public class UserObject {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
-	
-	
-	
+
 }

@@ -32,14 +32,6 @@ public class CompanyObject {
 		this.companyID=companyID;
 		this.companySymbol=companySymbol;
 	}
-
-	public int getStrategy() {
-		return strategy;
-	}
-
-	public void setStrategy(int strategy) {
-		this.strategy = strategy;
-	}
 	
 	public List<StockObject> getStocks() {
 		return stocks;
@@ -64,4 +56,13 @@ public class CompanyObject {
 	public void setCompanySymbol(String companySymbol) {
 		this.companySymbol = companySymbol;
 	}
+
+	public int getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(int strategy) {
+		this.strategy = strategy;
+	}
+	
 }
