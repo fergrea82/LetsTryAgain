@@ -107,7 +107,7 @@ public class TwoMovingAvg implements Runnable {
 						trade = new TradeHistoryObject();
 						trade.setBought(false);
 						trade.setStockObject(stock);
-						trade.setTradeTime(Calendar.getInstance().getTime().toString());
+						trade.setTradeTime(stock.getStockTime());
 						trade.setUserObject(user);
 						bean.addStock(stock);
 						bean.addTrade(trade);
@@ -125,7 +125,7 @@ public class TwoMovingAvg implements Runnable {
 						trade = new TradeHistoryObject();
 						trade.setBought(true);
 						trade.setStockObject(stock);
-						trade.setTradeTime(Calendar.getInstance().getTime().toString());
+						trade.setTradeTime(stock.getStockTime());
 						trade.setUserObject(user);
 						bean.addStock(stock);
 						bean.addTrade(trade);
